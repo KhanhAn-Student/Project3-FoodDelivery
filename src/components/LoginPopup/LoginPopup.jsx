@@ -1,9 +1,24 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './LoginPopup.css'
 import { assets } from '../../assets/assets';
+import { useState } from 'react';
 const LoginPopup = ({ setShowLogin }) => {
 
     const [currState, setCurrState] = React.useState("Login");
+    const [data,setData] = useState({
+        name: "",
+        email: "",
+        password: ""
+    })
+    const onChangeHandler = (event) => {
+        const name = event.target.name;
+        const value = event.target.value;
+        setData(data => ({...data,[name]:value}))
+    }
+
+    useEffect(()=>{
+        console.log(data);
+    },[data])
 
     return (
         <div className="login-popup">
@@ -13,10 +28,10 @@ const LoginPopup = ({ setShowLogin }) => {
                     <img onClick={() => setShowLogin(false)} src={assets.cross_icon} alt="" />
                 </div>
                 <div className="login-popup-inputs">
-                    {currState === "Login" ? <></> : <input type="text" placeholder='Your name' required />}
+                    {currState === "Login" ? <></> : <input name='name' onChange={onChangeHandler} value={data.name} type="text" placeholder='Your name' required />}
 
-                    <input type="email" placeholder='Your email' required />
-                    <input type="password" placeholder='Password' required />
+                    <input name='email' onChange={onChangeHandler} value={data.email} type="email" placeholder='Your email' required />
+                    <input name='password' onChange={onChangeHandler} value={data.password} type="password" placeholder='Password' required />
                 </div>
                 <button>
                     {currState === "Sign Up" ? "Create account" : "Login"}
@@ -26,8 +41,8 @@ const LoginPopup = ({ setShowLogin }) => {
                     <p>By continuing, you agree to our Terms of Service and Privacy Policy.</p>
                 </div>
                 {currState === "Login"
-                    ? <p>Create a new account ? <span onClick={()=>setCurrState("Sign Up")}>Click here</span></p>
-                    : <p>Already have an account? <span onClick={()=>setCurrState("Login")}>Login here</span></p>}
+                    ? <p>Create a new account ? <span onClick={() => setCurrState("Sign Up")}>Click here</span></p>
+                    : <p>Already have an account? <span onClick={() => setCurrState("Login")}>Login here</span></p>}
 
 
             </form>
